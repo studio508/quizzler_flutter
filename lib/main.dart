@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 // TODO: Step 2 - Import the rFlutter_Alert package here.
 import 'quiz_brain.dart';
+import 'percentage_answer.dart';
 
 QuizBrain quizBrain = QuizBrain();
+// CalculatePercentage calculatePercentage = CalculatePercentage();
 
 void main() => runApp(const Quizzler());
 
@@ -35,13 +37,12 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+  CalculatePercentage c = CalculatePercentage(6);
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
 
     setState(() {
-      //TODO: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If true, execute Part A, B, C, D.
-      //HINT! Step 4 Part B is in the quiz_brain.dart
       if (quizBrain.isFinished() == true) {
         Alert(
           context: context,
@@ -70,7 +71,7 @@ class _QuizPageState extends State<QuizPage> {
             ),
           );
         }
-        //TODO: Step 5 - If we've not reached the end, ELSE do the answer checking steps below 👇
+        // Todoc.점수출력();
         quizBrain.nextQuestion();
       }
     });
@@ -102,12 +103,8 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: TextButton(
-              onPressed: () {
-                // the user picked true.
-                checkAnswer(true);
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.green,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
               child: const Text(
                 'True',
@@ -116,6 +113,9 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                 ),
               ),
+              onPressed: () {
+                checkAnswer(true);
+              },
             ),
           ),
         ),
@@ -123,10 +123,6 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: TextButton(
-              onPressed: () {
-                // the user picked false.
-                checkAnswer(false);
-              },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
@@ -137,6 +133,10 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                 ),
               ),
+              onPressed: () {
+                // bool correctAnswer = questionBank[questionNum].questionAnswer;
+                checkAnswer(false);
+              },
             ),
           ),
         ),
@@ -146,4 +146,13 @@ class _QuizPageState extends State<QuizPage> {
       ],
     );
   }
+}
+
+_onBasicAlertPressed(context) async {
+  await Alert(
+    context: context,
+    title: "Finished",
+    desc: "You've reached the end of the quiz",
+  ).show();
+  debugPrint("Alert closed mow.");
 }
